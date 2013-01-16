@@ -11,11 +11,11 @@ Ext.define('sencha.model.XmlModel', {
     },
     setUrl: function(data) {
     	
-    	console.log("=====");
-    	console.log(data)
+    	//console.log("=====");
+    	//console.log(data)
     	var script = document.createElement("script");
     	var thumb_url = data.thumb_url;
-    	console.log(thumb_url)
+    	//console.log(thumb_url)
         script.setAttribute("src",
            "http://src.sencha.io/data.setDataUrl-"+data.id+"/" +
            thumb_url
@@ -25,7 +25,7 @@ Ext.define('sencha.model.XmlModel', {
     }
 });
 function setDataUrl(id, dataUrl) {
-	console.log(document.getElementById(id))
+	//console.log(document.getElementById(id))
     document.getElementById(id).src = dataUrl;
-	console.log(document.getElementById(id))
+	//console.log(document.getElementById(id))
  };
