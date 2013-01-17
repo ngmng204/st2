@@ -1,15 +1,15 @@
-Ext.define('sencha.view.XmlListView', {
+Ext.define('sencha.view.DemoListView', {
     extend: 'Ext.List',
-    xtype: 'xmllistview',
+    xtype: 'demolistview',
 
     config: {
         title: 'Xml List View',
 		iconCls: 'user',
         //grouped: true, 
-        store: 'XmlOnlineStore',
+        store: 'DemoStore',
         onItemDisclosure: true,
         useTitleAsBackText: true,
-        itemTpl: '<img id="{id}"src={thumb_url} />{title}'
+        itemTpl: '{Data}'
         
     }
 });

@@ -4,7 +4,9 @@ Ext.define('sencha.model.PersonModel', {
   config: {
     fields: [
     { name: 'id', type: 'int' }, // Every model must start with an id of type int
-    { name: 'name', type: 'string' } // bools, floats, objects and arrays also supported
+    { name: 'name', type: 'string' }, // bools, floats, objects and arrays also supported
+    { name: 'age', type: 'string' },
+    { name: 'career', type: 'string' }
     ],
     
     validations: [
@@ -19,8 +21,8 @@ Ext.define('sencha.model.PersonModel', {
     proxy: {
       type: 'sqlitestorage',
       dbConfig: {
-        tablename: 'people',
-        dbConn: sencha.util.InitSQLite.getConnection()
+        tablename: 'DEMO',
+        //dbConn: sencha.util.InitSQLite.getConnection()
       }
     }
   }

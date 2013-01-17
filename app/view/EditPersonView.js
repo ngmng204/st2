@@ -13,7 +13,22 @@ Ext.define("sencha.view.EditPersonView", {
         xtype: 'textfield',
         label: 'Name',
         name: 'name'
-      }
+      },
+              {
+              xtype: 'textfield',
+              label: 'Name',
+              name: 'name'
+              },
+              {
+              xtype: 'textfield',
+              label: 'Age',
+              name: 'age'
+              },
+              {
+              xtype: 'textfield',
+              label: 'Career',
+              name: 'career'
+              }
       ]
     },
     {
