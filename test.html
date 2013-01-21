@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemple Storage</title>
+        
+        <link rel="stylesheet" href="resources/css/sencha-touch.css" type="text/css">
+            <script type="text/javascript" charset="utf-8" src="cordova-2.2.0.js"></script>
+            <script type="text/javascript" charset="utf-8" src="sdk/sencha-touch.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            
+            // db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+            //db.transaction(populateDB, error);
+            Ext.Loader.setPath({"Ext": "sdk/src"})
+            
+            
+            Ext.application({
+                            name: 'sencha',
+                            models:['DiseaseModel', 'VitaminModel', 'AcidModel', 'MineralModel', 'PrecausionModel'],
+                            stores:['DiseaseStore', 'VitaminStore', 'AcidStore', 'MineralStore', 'PrecausionStore'],
+                            views: ['CardView', 'ConfigurationView', 'DiseaseListView'],
+                            launch: function () {
+                                    var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+                                    db.transaction(populateDB, error);
+                                    db.transaction(queryDB, error)
+                                    Ext.Viewport.add(Ext.create('sencha.view.CardView'))
+                            }
+                                
+            });
+            
+            function queryDB(tx){
+                tx.executeSql("select * from diseases", [], queryDiseasesSuccess, error)
+                tx.executeSql("select * from vitamins", [], queryVitaminsSuccess, error)
+                tx.executeSql("select * from diseases", [], queryMineralsSuccess, error)
+                tx.executeSql("select * from acids", [], queryAcidsSuccess, error)
+                tx.executeSql("select * from precausions", [], queryPrecausionsSuccess, error)
+            }
+            function queryDiseasesSuccess(tx, results){
+                    console.log(results.rows)
+                    bindStore('Disease', results)
+            }
+            function queryVitaminsSuccess(tx, results){
+                console.log(results.rows)
+                bindStore('Vitamin', results)
+            }
+            function queryMineralsSuccess(tx, results){
+                console.log(results.rows)
+                bindStore('Mineral', results)
+            }
+            function queryAcidsSuccess(tx, results){
+                console.log(results.rows)
+                bindStore('Acid', results)
+            }
+            function queryPrecausionsSuccess(tx, results){
+                console.log(results.rows)
+                bindStore('Precausion', results)
+            }
+            function bindStore(name, results){
+                var storeName = name+"Store";
+                
+                var modelName = "sencha.model."+name+"Model";
+                console.log(modelName)
+                var store = Ext.getStore(storeName)
+                for(var i=0; i<results.rows.length; i++){
+                    var object = new Object();
+                    object.id = results.rows.item(i).id
+                    object.name = results.rows.item(i).name;
+                    var model = Ext.create(modelName, object)
+                    store.add(model)
+                }
+                console.log(store)
+            }
+            function populateDB(tx){
+                console.log("pop pulate")
+                tx.executeSql('DROP TABLE IF EXISTS done_status');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS done_status(id INTEGER NOT NULL, done_status INTEGER(1), PRIMARY KEY(id))');
+                tx.executeSql('INSERT INTO done_status (id, done_status) VALUES (1,0)');
+                
+                tx.executeSql('DROP TABLE IF EXISTS DEMO');
+                
+                
+                tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
+                tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "Premier enregistrement")');
+                tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Seconde enregistrement")');
+                
+                tx.executeSql('DROP TABLE IF EXISTS diseases');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS diseases (id INTEGER NOT NULL, name VARCHAR(25),  choose INTEGER(1), PRIMARY KEY (id))');
+                tx.executeSql('INSERT INTO diseases (id, name, choose) VALUES (1, "Premier diseases", 0)');
+                tx.executeSql('INSERT INTO diseases (id, name, choose) VALUES (2, "Seconde diseases", 0)');
+                tx.executeSql('INSERT INTO diseases (id, name, choose) VALUES (3, "Seconde diseases", 0)');
+                tx.executeSql('INSERT INTO diseases (id, name, choose) VALUES (4, "Seconde diseases", 0)');
+                tx.executeSql('INSERT INTO diseases (id, name, choose) VALUES (5, "Seconde diseases", 0)');
+                tx.executeSql('INSERT INTO diseases (id, name, choose) VALUES (6, "Seconde diseases", 0)');
+                
+                
+                tx.executeSql('DROP TABLE IF EXISTS vitamins');
+                tx.executeSql('CREATE TABLE if not exists vitamins(id INTEGER NOT NULL, name VARCHAR(25),  choose INTEGER(1), PRIMARY KEY (id))');
+                tx.executeSql('INSERT INTO vitamins (id, name, choose) VALUES (1, "Premier vitamins", 0)');
+                tx.executeSql('INSERT INTO vitamins (id, name, choose) VALUES (2, "Seconde vitamins", 0)');
+                tx.executeSql('INSERT INTO vitamins (id, name, choose) VALUES (3, "Seconde vitamins", 0)');
+                tx.executeSql('INSERT INTO vitamins (id, name, choose) VALUES (4, "Seconde vitamins", 0)');
+                tx.executeSql('INSERT INTO vitamins (id, name, choose) VALUES (5, "Seconde vitamins", 0)');
+                tx.executeSql('INSERT INTO vitamins (id, name, choose) VALUES (6, "Seconde vitamins", 0)');
+                
+                
+                tx.executeSql('DROP TABLE IF EXISTS minerals');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS minerals (id INTEGER NOT NULL, name VARCHAR(25),  choose INTEGER(1), PRIMARY KEY (id))');
+                tx.executeSql('INSERT INTO minerals (id, name, choose) VALUES (1, "Premier minerals",0)');
+                tx.executeSql('INSERT INTO minerals (id, name, choose) VALUES (2, "Seconde minerals",0)');
+                tx.executeSql('INSERT INTO minerals (id, name, choose) VALUES (3, "Seconde minerals",0)');
+                tx.executeSql('INSERT INTO minerals (id, name, choose) VALUES (4, "Seconde minerals",0)');
+                tx.executeSql('INSERT INTO minerals (id, name, choose) VALUES (5, "Seconde minerals",0)');
+                tx.executeSql('INSERT INTO minerals (id, name, choose) VALUES (6, "Seconde minerals",0)');
+                
+                
+                tx.executeSql('DROP TABLE IF EXISTS acids');
+                
+                //tx.executeSql('CREATE TABLE if not exists  acids(id INTEGER(11) PRIMARY KEY, name VARCHAR(255), check varchar(1))');
+                tx.executeSql('CREATE TABLE if not exists acids(id INTEGER NOT NULL, name VARCHAR(25),  choose INTEGER(1), PRIMARY KEY (id))');
+                
+                
+                tx.executeSql('INSERT INTO acids (id, name, choose) VALUES (1, "Premier acids", 1)');
+                tx.executeSql('INSERT INTO acids (id, name, choose) VALUES (2, "Premier acids", 1)');
+                tx.executeSql('INSERT INTO acids (id, name, choose) VALUES (3, "Seconde acids", 1)');
+                tx.executeSql('INSERT INTO acids (id, name, choose) VALUES (4, "Seconde acids", 0)');
+                tx.executeSql('INSERT INTO acids (id, name, choose) VALUES (5, "Seconde acids", 0)');
+                tx.executeSql('INSERT INTO acids (id, name, choose) VALUES (6, "Seconde acids", 0)');
+                
+                tx.executeSql('DROP TABLE IF EXISTS precausions');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS precausions (id INTEGER NOT NULL, name VARCHAR(25),  choose INTEGER(1), PRIMARY KEY (id))');
+                tx.executeSql('INSERT INTO precausions (id, name, choose) VALUES (1, "Premier precausions", 0)');
+                tx.executeSql('INSERT INTO precausions (id, name, choose) VALUES (2, "Seconde precausions", 0)');
+                tx.executeSql('INSERT INTO precausions (id, name, choose) VALUES (3, "Seconde precausions", 0)');
+                tx.executeSql('INSERT INTO precausions (id, name, choose) VALUES (4, "Seconde precausions", 0)');
+                tx.executeSql('INSERT INTO precausions (id, name, choose) VALUES (5, "Seconde precausions", 0)');
+                tx.executeSql('INSERT INTO precausions (id, name, choose) VALUES (6, "Seconde precausions", 0)');
+                
+                
+                //create product list
+                tx.executeSql('DROP TABLE IF EXISTS products');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS products (id INTEGER NOT NULL, name VARCHAR(255),  disease INTEGER(11), vitamins VARCHAR(255), acids VARCHAR(255), minerals VARCHAR(255), precausions VARCHAR(255), PRIMARY KEY (id))');
+                
+                
+                tx.executeSql('INSERT INTO products (id, name, disease, vitamins, acids, minerals, precausions) VALUES (1, "Product 1",1, "[1,2]", "[1]", "[2]", "[3]")');
+                tx.executeSql('INSERT INTO products (id, name, disease, vitamins, acids, minerals, precausions) VALUES (2, "Product 2",1, "[1,3]", "[1]", "[2]", "[3]")');
+                tx.executeSql('INSERT INTO products (id, name, disease, vitamins, acids, minerals, precausions) VALUES (3, "Product 3",1, "[1]", "[1]", "[2]", "[3]")');
+                tx.executeSql('INSERT INTO products (id, name, disease, vitamins, acids, minerals, precausions) VALUES (4, "Product 4",1, "[]", "[1]", "[]", "[1]")');
+                tx.executeSql('INSERT INTO products (id, name, disease, vitamins, acids, minerals, precausions) VALUES (5, "Product 5",4, "[]", "[2]", "[]", "[3]")');
+                tx.executeSql('INSERT INTO products (id, name, disease, vitamins, acids, minerals, precausions) VALUES (6, "Product 6",4, "[0]", "[1]", "[2]", "[4]")');
+            }
+            function error(err){
+                console.log("error: " + err.code)
+            }
+            </script>
+    </head>
+    <body>
+        
+    </body>
+</html>

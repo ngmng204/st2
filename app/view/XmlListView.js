@@ -3,13 +3,14 @@ Ext.define('sencha.view.XmlListView', {
     xtype: 'xmllistview',
 
     config: {
-        title: 'Xml List View',
+        title: 'Products',
 		iconCls: 'user',
         //grouped: true, 
         store: 'XmlOnlineStore',
         onItemDisclosure: true,
         useTitleAsBackText: true,
-        itemTpl: '<img id="{id}"src={thumb_url} />{title}'
+        itemTpl: '{title}'//'<img id="{id}"src={thumb_url} />'
+           
         
     }
 });

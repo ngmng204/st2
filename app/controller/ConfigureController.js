@@ -70,6 +70,7 @@ Ext.define("sencha.controller.ConfigureController", {
            this.getPrecausionButton().show();
            this.getAcidButton().show();
            this.getBottomToolbar().show();
+           this.getDoneButton().show();
    },
    hideButtons: function(){
            console.log("hide")
@@ -79,7 +80,8 @@ Ext.define("sencha.controller.ConfigureController", {
             this.getPrecausionButton().hide();
             this.getAcidButton().hide();
             this.getBottomToolbar().hide();
-           Ext.getCmp("bottom-toolbar").hide();
+            Ext.getCmp("bottom-toolbar").hide();
+            this.getDoneButton().hide()
    },
     onDoneButtonTap: function(){
            console.log("onDoneButtonTap");

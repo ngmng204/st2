@@ -4,7 +4,7 @@ Ext.define('sencha.view.ProductContainerView', {
     id: 'productcontainerview-id',
     config: {
         iconCls: 'home',
-        //title: 'Navigation View',
+        
         defaults: {
             styleHtmlContent: true
         },
@@ -17,33 +17,17 @@ Ext.define('sencha.view.ProductContainerView', {
                     {
                     xtype: "button",
                     ui:'action-small',
-                    id: "done-btn",
-                    text: "Done",
+                    id: "setting-btn",
+                    text: "setting",
                     align: 'right',
                     hidden: false,
                     },
-                    {
-                    xtype: "button",
-                    id: "acid-btn",
-                    text: "Acid",
-                    align: 'right',
-                    hidden: false,
-                    },
-                    {
-                    xtype: "button",
-                    id: "mineral-btn",
-                    text: "Mineral",
-                    align: 'center',
-                    hidden: false,
-                    },
+                    
                     
             ]
         },
         items: [{
-        	xtype: 'productlistview',
-        	//html: 'test'
-        }
-        
-        ]
+        	xtype: 'xmllistview',        	
+        }]
     }
 });

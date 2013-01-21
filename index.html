@@ -1,151 +1,61 @@
-<!DOCTYPE HTML>
-<html manifest="" lang="en-US">
-<head>
-    <meta charset="UTF-8">
-    <title>sencha</title>
-    <link rel="canonical" href="resources/css/app.css">
-    <style type="text/css">
-         /**
-         * Example of an initial loading indicator.
-         * It is recommended to keep this as minimal as possible to provide instant feedback
-         * while other resources are still being loaded for the first time
-         */
-        html, body {
-            height: 100%;
-            background-color: #1985D0
-        }
-
-        #appLoadingIndicator {
-            position: absolute;
-            top: 50%;
-            margin-top: -15px;
-            text-align: center;
-            width: 100%;
-            height: 30px;
-            -webkit-animation-name: appLoadingIndicator;
-            -webkit-animation-duration: 0.5s;
-            -webkit-animation-iteration-count: infinite;
-            -webkit-animation-direction: linear;
-        }
-
-        #appLoadingIndicator > * {
-            background-color: #FFFFFF;
-            display: inline-block;
-            height: 30px;
-            -webkit-border-radius: 15px;
-            margin: 0 5px;
-            width: 30px;
-            opacity: 0.8;
-        }
-
-        @-webkit-keyframes appLoadingIndicator{
-            0% {
-                opacity: 0.8
-            }
-            50% {
-                opacity: 0
-            }
-            100% {
-                opacity: 0.8
-            }
-        }
-    </style>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemple Storage</title>
+        <link rel="stylesheet" href="resources/css/sencha-touch.css" type="text/css">
         <script type="text/javascript" charset="utf-8" src="cordova-2.2.0.js"></script>
         <script type="text/javascript" charset="utf-8" src="sdk/sencha-touch.js"></script>
-        <!-- The line below must be kept intact for Sencha Command to build your application -->
-            
-        <script id="microloader" type="text/javascript" src="sdk/microloader/development.js"></script>
+        <script type="text/javascript" charset="utf-8" src="index.js"></script>
+
         <script type="text/javascript" charset="utf-8">
             Ext.Loader.setPath({"Ext": "sdk/src"});
             Ext.application({
-                    name: 'sencha',
-                    test: "",
-                    requires: [
-                               'Ext.MessageBox',
-                               'Ext.Panel'
-                              
-                    ],
-                    models: [
-                        'DiseaseModel',
-                        'VitaminModel',
-                        'AcidModel',
-                        'MineralModel',
-                        'PrecausionModel'
-                    ],
-                    stores: [
-                        'DiseaseStore',
-                        'VitaminStore',
-                        'AcidStore',
-                        'MineralStore',
-                        'PrecausionStore'
-                    ],
-                    controllers: ['ConfigureController'],
-                    views: ['NavigationView', 'DiseaseListView', 'XmlListView', 'AcidListView'],
-                    launch: function () {
+                            name: 'sencha',
+                            controllers:['ConfigureController', 'MainController'],
+                            stores:['DiseaseStore',
+                                    'AcidStore', 'MineralStore', 'PrecausionStore', 'VitaminStore', 'XmlOnlineStore'
+                                    ],
+                            models:['DiseaseModel',
+                                    'AcidModel', 'MineralModel', 'VitaminModel', 'PrecausionModel', 'XmlModel'
+                                    ],
+                            views:['DiseaseListView', 'NavigationView',
+                                   'AcidListView', 'PrecausionListView', 'VitaminListView', 'MineralListView', 'XmlListView',
+                                   'ProductListView',
+                                   'CardView',
+                                   'ProductContainerView'
+                            ],
+                            checkAcid: "",
+                            currentStore: '',
+                            checkId: '',
+                            vitaminsCondition: "",
+                            acidsCondition: "",
+                            precausionsCondition: "",
+                            mineralsCondition: "",
+                            diseaseSelect: "",
+                            diseaseCondition:"",
+                            diseaseFilter: "",
+                            vitaminFilter:"",
+                            mineralFilter:"",
+                            acidFilter:"",
+                            precausionFilter:"",
+                            checkDoneStatus: 0,
+                            queryStatement:"",
                             
-                            document.addEventListener("deviceready", onDeviceReady, false);
-                            function onDeviceReady(){
-                                    console.log("deviceready");
-                                    if(window.localStorage.getItem('runned')==null){
-                                            // First RUN
-                                            console.log('============first running=========')
-                                            window.localStorage.setItem('runned','1')
-                                            //create tables;
-                                            var db = window.openDatabase("Database", "1.0", "Phonegap Demo", 200000)
-                                            db.transaction(initializeData, function(err){console.log("query error: "  + err.code)}, function(){ console.log("initialize success"); })
-                                            db.transaction(queryDB, function(err){console.log("query error: "  + err.code)});
-                            
-                                    }else{
-                                           
-                                            console.log('======= already launched ===========')
-                                            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);                                            
-                                            db.transaction(queryDB, function(err){console.log("query error: "  + err.code)});
-                                    }
-                            }                            
-                            function initializeData(tx){
-                                    initialize(tx);                                    
-                            }                   
-                            function queryDB(tx){                     
-                                     tx.executeSql('select * from diseases', [], querySuccess, function(err){console.log("query error: "  + err.code)});
-                                     tx.executeSql('select * from vitamins', [], queryVitaminsSuccess, function(err){console.log("query error: "  + err.code)});
-                                     tx.executeSql('select * from acids', [], queryAcidsSuccess, function(err){console.log("query error: "  + err.code)});
-                                     tx.executeSql('select * from minerals', [], queryMineralsSuccess, function(err){console.log("query error: "  + err.code)});
-                                     tx.executeSql('select * from precausions', [], queryPrecausionsSuccess, function(err){console.log("query error: "  + err.code)});
+                            launch: function(){
+                                        console.log("launch")
+                                        document.addEventListener("deviceready", onDeviceReady, false);
+                                        
+                                        
+                                        
                             }
-                            function queryVitaminsSuccess(tx, results){
-                                    bindStore(tx, results, 'VitaminStore')
-                            }
-                            function queryAcidsSuccess(tx, results){
-                                    bindStore(tx, results, 'AcidStore')
-                            }
-                            function queryMineralsSuccess(tx, results){
-                                    bindStore(tx, results, 'MineralStore')
-                            }
-                            function queryPrecausionsSuccess(tx, results){
-                                   // console.log("queryPrecausionsSuccess")
-                                    bindStore(tx, results, 'PrecausionStore')
-                            }
-                            function querySuccess(tx, results){
-                                    bindStore(tx, results, 'DiseaseStore')
-                            }
-                            Ext.fly('appLoadingIndicator').destroy();      
-                            Ext.Viewport.add(Ext.create("sencha.view.NavigationView"));
-                    }
-            });
             
             
             
-            
-          
-            
+                });
+                
+
         </script>
-        <script type="text/javascript" charset="utf-8" src="global.js"></script>
-</head>
-<body>
-    <!--<div id="appLoadingIndicator">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>-->
-</body>
+
+        </head>
+    
 </html>
