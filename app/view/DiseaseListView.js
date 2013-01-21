@@ -3,13 +3,13 @@ Ext.define('sencha.view.DiseaseListView', {
     xtype: 'diseaselistview',
 
     config: {
-        title: 'Disease List View',
-		iconCls: 'user',
+        //title: 'Disease List View',
+		//iconCls: 'user',
         //grouped: true, 
         store: 'DiseaseStore',
-        onItemDisclosure: true,
-        useTitleAsBackText: true,
-        itemTpl: '{disease_name}'
+        //onItemDisclosure: true,
+        //useTitleAsBackText: true,
+        itemTpl: '{name}'
         
     }
 });

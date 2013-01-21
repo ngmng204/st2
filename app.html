@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemple Storage</title>
+        <link rel="stylesheet" href="resources/css/sencha-touch.css" type="text/css">
+        <script type="text/javascript" charset="utf-8" src="cordova-2.2.0.js"></script>
+        <script type="text/javascript" charset="utf-8" src="sdk/sencha-touch.js"></script>
+        <script type="text/javascript" charset="utf-8" src="global.js"></script>        
+
+        <script type="text/javascript" charset="utf-8">
+            Ext.Loader.setPath({"Ext": "sdk/src"});
+            Ext.application({
+                            name: 'sencha',
+                            controllers:['ConfigureController'],
+                            stores:['DiseaseStore',
+                                    'AcidStore', 'MineralStore', 'PrecausionStore', 'VitaminStore', 'XmlOnlineStore'
+                                    ],
+                            models:['DiseaseModel',
+                                    'AcidModel', 'MineralModel', 'VitaminModel', 'PrecausionModel', 'XmlModel'
+                                    ],
+                            views:['DiseaseListView', 'NavigationView',
+                                   'AcidListView', 'PrecausionListView', 'VitaminListView', 'MineralListView', 'XmlListView',
+                                   'ProductListView',
+                                   'CardView',
+                                   'ProductContainerView'
+                                   ],
+                            checkAcid: "",
+                            currentStore: '',
+                            checkId: '',
+                            vitaminsCondition: "",
+                            acidsCondition: "",
+                            precausionsCondition: "",
+                            mineralsCondition: "",
+                            diseaseSelect: "",
+                            diseaseCondition:"",
+                            launch: function(){
+                                    console.log("launch")                            
+                                    document.addEventListener("deviceready", onDeviceReady, false);                            
+                                    function populateDB(tx) {
+                                            prepopulate(tx)                                            
+                                    }                           
+                                    function queryDB(tx) {
+                                            
+                                            tx.executeSql('SELECT * FROM diseases', [], queryDiseaseSuccess, errorCB);                            
+                                            tx.executeSql('SELECT * FROM acids', [], queryAcidSuccess, errorCB);
+                                            tx.executeSql('SELECT * FROM precausions', [], queryPrecausionSuccess, errorCB);
+                                            tx.executeSql('SELECT * FROM vitamins', [], queryVitaminSuccess, errorCB);
+                                            tx.executeSql('SELECT * FROM minerals', [], queryMineralSuccess, errorCB);
+                            
+                                            //tx.executeSql('select * from products where id=1 and(vitamin ', [], queryProductSuccess, errorCB)
+                                    }
+                                    function queryProductSuccess(tx, results){
+                                            console.log(results.rows.length)
+                                    }   
+                                    function queryDiseaseSuccess(tx, results) {
+                                            bindStore(results, 'DiseaseStore')
+                                    }
+                                    function queryVitaminSuccess(tx, results) {
+                                            bindStore(results, 'VitaminStore')
+                                    }
+                                    function queryMineralSuccess(tx, results) {
+                                            bindStore(results, 'MineralStore')
+                                    }
+                                    function queryAcidSuccess(tx, results) {
+                                            console.log("queryAcidSuccess")
+                                            bindStore(results, 'AcidStore')
+                                    }
+                                    function queryPrecausionSuccess(tx, results) {
+                                            bindStore(results, 'PrecausionStore')
+                                    }
+                                    function errorCB(tx, err) {
+                                                console.log("Erreur de traitement SQL : "+err.code);
+                                    }                   
+                                    function successCB() {
+                                            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+                                            db.transaction(queryDB, errorCB);
+                                    }
+                                    function onDeviceReady() {
+                                                if(window.localStorage.getItem('runned')==null){
+                                                        // First RUN
+                                                        console.log('============first running=========');
+                                                        var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+                                                        db.transaction(populateDB, errorCB, successCB);
+                                                        window.localStorage.setItem('runned','1')
+                            
+                                                }else{
+                                                        console.log('======= already launched ===========');
+                                                        var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+                                                        db.transaction(checkDoneConfiguration, errorCB)
+                                                        db.transaction(queryDB, errorCB);
+                                                }
+                                    }
+                            
+                            
+                                    function checkDoneConfiguration(tx){
+                                            console.log("check done ")
+                                            tx.executeSql("select * from done_status", [],successCheckConfig, errorCB)
+                                    }
+                                    function successCheckConfig(tx, results){
+                                            console.log("successCheckConfigsuccessCheckConfig")
+                                            console.log(results.rows.length)
+                                            if(results.rows.item(0).done_status == 1){
+                                                    Ext.Viewport.add(Ext.create('sencha.view.CardView'))
+                                                    Ext.Viewport.setActiveItem(indexPanel)
+                                            }else{
+                                                    Ext.Viewport.add(Ext.create('sencha.view.CardView'))
+                                                    Ext.Viewport.setActiveItem(0)
+                                            }
+                                    }
+                                    //Ext.Viewport.add(Ext.create('sencha.view.CardView'))
+                            }
+            
+            
+            
+            })
+                        
+        </script>
+
+        </head>
+        
+</html>

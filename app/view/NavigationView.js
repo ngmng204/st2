@@ -4,7 +4,7 @@ Ext.define('sencha.view.NavigationView', {
     id: 'navigationview-id',
     config: {
         iconCls: 'home',
-        title: 'Navigation View',
+        //title: 'Navigation View',
         defaults: {
             styleHtmlContent: true
         },
@@ -13,18 +13,27 @@ Ext.define('sencha.view.NavigationView', {
         	ui: 'sencha',
             
             text: "A",
-        	items: [{
-        		xtype: "button",
-        		id: "acid-btn",
-        		text: "Acid",
-        		align: 'right',
-        		hidden: false,
-        	},
+        	items: [
+                    {
+                    xtype: "button",
+                    ui:'action-small',
+                    id: "done-btn",
+                    text: "Done",
+                    align: 'right',
+                    hidden: false,
+                    },
+                    {
+                    xtype: "button",
+                    id: "acid-btn",
+                    text: "Acid",
+                    align: 'right',
+                    hidden: false,
+                    },
                     {
                     xtype: "button",
                     id: "mineral-btn",
                     text: "Mineral",
-                    align: 'left',
+                    align: 'center',
                     hidden: false,
                     },
                     
@@ -41,21 +50,43 @@ Ext.define('sencha.view.NavigationView', {
                 items: [{
                         xtype: "button",
                         id: "vitamin-btn",
-                        text: "vitamin",
+                        text: "Vitamin",
                         align: 'right',
                         hidden: false,
                         },
+                        
+                        
                         {
                         xtype: "button",
                         id: "precausion-btn",
-                        text: "precausion",
+                        text: "Precausion",
                         align: 'left',
                         hidden: false,
                         }]
         
         //html: 'test'
-        }
-                
+        },
+//                {
+//                xtype: 'toolbar',
+//                docked: 'top',
+//                id: 'bottom-toolbar1',
+//                items: [{
+//                        xtype: "button",
+//                        id: "vitamin-btn",
+//                        text: "vitamin",
+//                        align: 'right',
+//                        hidden: false,
+//                        },
+//                        {
+//                        xtype: "button",
+//                        id: "precausion-btn",
+//                        text: "precausion",
+//                        align: 'left',
+//                        hidden: false,
+//                        }]
+//                
+//                //html: 'test'
+//                }
         ]
     }
 });

@@ -4,8 +4,8 @@ Ext.define('sencha.model.PrecausionModel', {
   config: {
     fields: [
         { name: 'id', type: 'int' }, // Every model must start with an id of type int
-        { name: 'precausion_name', type: 'string' }, // bools, floats, objects and arrays also supported
-     
+        { name: 'name', type: 'string' }, // bools, floats, objects and arrays also supported
+        {name: 'choose', type: 'int', defaultValue: 0}     
     ],
     
     
